@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://unpkg.com/htmx.org@1.9.4"></script>
+  </head>
+  <body>
+    <button
+        hx-get="http://localhost:8080"
+        hx-swap="beforeend" 
+        hx-target=".list">
+        Click Me
+    </button>
+
+    <ul class="list">
+      <li>Item 1</li>
+      <li>Item 2</li>
+    </ul>
+
+    <script>
+      document.addEventListener('htmx:configRequest', (evt) => {
+          evt.detail.headers = [];
+      });
+    </script>
+  </body>
+</html>

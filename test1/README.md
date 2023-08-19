@@ -1,0 +1,1 @@
+[from "htmx in 100 seconds" by Fireship](https://youtu.be/r-GSGH2RxJs)
