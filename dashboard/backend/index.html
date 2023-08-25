@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTMX & Go - Demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <script src="https://unpkg.com/htmx.org@1.9.5" crossorigin="anonymous"></script>
+
+</head>
+<body class="container">
+
+<div class="row mt-4 g-4">
+  <div class="col-8">
+    <h1 class="mb-4">Favorites List</h1>
+
+    <ul class="list-group fs-5 me-5" id="favorite-list">
+      {{ range .Favorites }}
+      {{ block "favorite-list-element" .}}
+      <li class="list-group-item bg-primary text-white mb-2">{{ .Name }} - {{ .HostName }} - {{ .Icon }} - {{ .Port }} - {{ .Color }}</li>
+      {{ end }}
+      {{ end }}
+    </ul>
+  </div>
+
+  <div class="col-4">
+    <h1 class="mb-4">Add Favorite</h1>
+
+    <form hx-post="/add-favorite/" hx-target="#favorite-list" hx-swap="beforeend" hx-indicator="#spinner">
+      <div class="mb-2">
+        <label for="favorite-name">Name</label>
+        <input type="text" name="name" id="favorite-name" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="favorite-hostname">Host Name</label>
+        <input type="text" name="hostname" id="favorite-hostname" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="favorite-icon">icon</label>
+        <input type="text" name="icon" id="favorite-icon" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="favorite-port">Port</label>
+        <input type="text" name="port" id="favorite-port" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="favorite-color">color</label>
+        <input type="text" name="color" id="favorite-color" class="form-control" />
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        <span class="spinner-border spinner-border-sm htmx-indicator" id="spinner" role="status" aria-hidden="true"></span>
+        Submit
+      </button>
+    </form>
+  </div>
+
+</div>
+
+</body>
+</html>
