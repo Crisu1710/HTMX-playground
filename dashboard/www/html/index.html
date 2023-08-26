@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTMX & Go - Demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/htmx.org@1.9.5" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+</head>
+<body class="container">
+
+<div class="row mt-4 g-4">
+    <div class="flex-h-container">
+      <h1 class="mb-4">Favorites List</h1>
+      <button class="add-btn" hx-get="/modal" hx-target="#modals-here" hx-trigger="click" data-bs-toggle="modal" data-bs-target="#modals-here">ADD</button>
+      <div id="modals-here" class="modal modal-blur fade" style="display: none" aria-hidden="false" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+          <div class="modal-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-container" id="favorite-list">
+      {{ range .Favorites }}
+      {{ block "favorite-list-element" .}}
+      <div class="flex-item" style="background: {{.Color}}">
+        <p class="my-h" id="favorite-name">{{.Name}}</p>
+        <p>{{ .HostName }}</p>
+        <p>{{ .Icon }}</p>
+        <p>{{ .Port }}</p>
+        <button class="card-btn" hx-confirm="Are you sure?" hx-delete="/remove-favorite/{{.Name}}" hx-target="closest div" hx-swap="outerHTML">test</button>
+      </div>
+      {{ end }}
+      {{ end }}
+    </div>
+  </div>
+</body>
+</html>

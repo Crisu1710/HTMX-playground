@@ -1,0 +1,73 @@
+/*body, div, input {
+    background: #181a1b;
+    color: #ffffff;
+}
+
+.myform {
+    background: #181a1b;
+    color: #ffffff;
+}*/
+
+.flex-h-container {
+    /* We first create a flex layout context */
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.flex-container {
+    /* We first create a flex layout context */
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: normal;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.flex-item {
+    background: #0cb0d5;
+    padding: 8px;
+    width: 200px;
+    height: 150px;
+    margin: 5px;
+    line-height: 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 25px;
+}
+
+p {
+    margin-bottom: 1px;
+}
+
+.my-h {
+    margin-bottom: 12px;
+    text-align: center;
+    font-size: 22px;
+}
+
+.add-btn {
+    border-radius: 25px;
+    border: none;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.card-btn {
+    border-radius: 12px;
+    border: #ffffff 2px solid;
+    color: #ffffff;
+    margin-top: 5px;
+    padding: 4px;
+    text-align: center;
+    background: transparent;
+}
