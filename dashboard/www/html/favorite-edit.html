@@ -5,7 +5,7 @@
             <h1 class="modal-title" id="exampleModalLabel">Edit Favorite</h1>
         </div>
         <div class="modal-body" style="text-align: left">
-            <form hx-put="/edit-favorite/{{.UUID}}" hx-target="#favorite-card-{{.UUID}}" hx-swap="outerHTML" hx-indicator="#spinner">
+            <form hx-put="/favorite/edit/{{.UUID}}" hx-target="#favorite-card-{{.UUID}}" hx-swap="outerHTML" hx-indicator="#spinner">
                 <div class="mb-2">
                     <label for="favorite-name">Name</label>
                     <input type="text" name="name" id="favorite-name" class="form-control" value="{{.Name}}"/>

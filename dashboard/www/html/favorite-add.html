@@ -4,7 +4,7 @@
             <h1 class="modal-title" id="exampleModalLabel">Add Favorite</h1>
         </div>
         <div class="modal-body">
-            <form hx-post="/add-favorite/" hx-target="#favorite-list" hx-swap="beforeend" hx-indicator="#spinner">
+            <form hx-post="/favorite/add/" hx-target="#favorite-list" hx-swap="beforeend" hx-indicator="#spinner">
                 <div class="mb-2">
                     <label for="favorite-name">Name</label>
                     <input type="text" name="name" id="favorite-name" class="form-control"/>
@@ -26,7 +26,7 @@
                     <input type="text" name="color" id="favorite-color" class="form-control"/>
                 </div>
 
-                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
+                <button type="submit" class="btn btn-primary"> <!--data-bs-dismiss="modal"-->
                         <span class="spinner-border spinner-border-sm htmx-indicator" id="spinner" role="status"
                               aria-hidden="true"></span>
                     Submit

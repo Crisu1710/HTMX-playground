@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -22,6 +21,12 @@ type Favorites struct {
 	Color    string
 }
 
+func getUUID(urlPath *url.URL) string {
+	idSplit := strings.Split(urlPath.Path, "/")
+	id := idSplit[len(idSplit)-1]
+	return id
+}
+
 func getListFromJson() map[string][]Favorites {
 	content, err := os.ReadFile("Favorites.json")
 	if err != nil {
@@ -34,73 +39,46 @@ func getListFromJson() map[string][]Favorites {
 	}
 	return favorites
 }
-func saveNewList(favorites Favorites) {
-	oldList := getListFromJson()
-	var newFav []Favorites
+
+func genNewJsonList(favorite Favorites, method string, id string) {
+	jsonList := getListFromJson()
+	var newFavList []Favorites
 	var myKey string
-	for key, val := range oldList {
-		newFav = append(val, favorites)
+	for key, valFromJson := range jsonList {
 		myKey = key
-	}
-	newList := map[string][]Favorites{
-		myKey: newFav,
-	}
-
-	rankingsJson, _ := json.Marshal(newList)
-	os.WriteFile("Favorites.json", rankingsJson, 0644)
-}
-
-func getUUID(urlPath *url.URL) string {
-	idSplit := strings.Split(urlPath.Path, "/")
-	id := idSplit[2]
-	return id
-}
-
-func removeFromList(id string) {
-	oldList := getListFromJson()
-	var myKey string
-	var newFav []Favorites
-	for key, val := range oldList {
-		myKey = key
-		for _, v := range val {
-			if v.UUID != id {
-				newFav = append(newFav, v)
+		if method == "DELETE" {
+			for _, v := range valFromJson {
+				if v.UUID != id {
+					newFavList = append(newFavList, v)
+				}
 			}
+		} else if method == "PUT" {
+			for _, v := range valFromJson {
+				if v.UUID != favorite.UUID {
+					newFavList = append(newFavList, v)
+				}
+			}
+			newFavList = append(newFavList, favorite)
+		} else if method == "POST" {
+			newFavList = append(valFromJson, favorite)
+		} else {
+			log.Println(method)
+			log.Fatal("unknown method")
 		}
 	}
 	newList := map[string][]Favorites{
-		myKey: newFav,
+		myKey: newFavList,
 	}
 
 	rankingsJson, _ := json.Marshal(newList)
 	os.WriteFile("Favorites.json", rankingsJson, 0644)
 }
 
-func editList(favorite Favorites) {
-	oldList := getListFromJson()
-	var myKey string
-	var newFav []Favorites
-	for key, val := range oldList {
-		myKey = key
-		for _, v := range val {
-			if v.UUID != favorite.UUID {
-				newFav = append(newFav, v)
-			}
-		}
-		newFav = append(newFav, favorite)
-	}
-	newList := map[string][]Favorites{
-		myKey: newFav,
-	}
-	rankingsJson, _ := json.Marshal(newList)
-	os.WriteFile("Favorites.json", rankingsJson, 0644)
-}
-
-func getOneFav(id string) Favorites {
-	all := getListFromJson()
+func getOneFavByID(id string) Favorites {
+	jsonList := getListFromJson()
 	var targetFav Favorites
-	for _, val := range all {
-		for _, v := range val {
+	for _, valFromJson := range jsonList {
+		for _, v := range valFromJson {
 			if v.UUID == id {
 				targetFav = v
 			}
@@ -110,7 +88,7 @@ func getOneFav(id string) Favorites {
 }
 
 func main() {
-	fmt.Println("Running ...")
+	log.Println("Running ...")
 
 	getFavFomJson := func(w http.ResponseWriter, r *http.Request) {
 		tmpl := template.Must(template.ParseFiles("www/html/index.html"))
@@ -127,22 +105,22 @@ func main() {
 		color := r.PostFormValue("color")
 		tmpl := template.Must(template.ParseFiles("www/html/index.html"))
 		tmpl.ExecuteTemplate(w, "favorite-list-element", Favorites{UUID: id.String(), Name: name, HostName: hostname, Icon: icon, Port: port, Color: color})
-		go saveNewList(Favorites{UUID: id.String(), Name: name, HostName: hostname, Icon: icon, Port: port, Color: color})
+		go genNewJsonList(Favorites{UUID: id.String(), Name: name, HostName: hostname, Icon: icon, Port: port, Color: color}, r.Method, "")
 	}
 
 	addFavForm := func(w http.ResponseWriter, r *http.Request) {
-		tmpl := template.Must(template.ParseFiles("www/html/favorite-form.html"))
+		tmpl := template.Must(template.ParseFiles("www/html/favorite-add.html"))
 		tmpl.Execute(w, nil)
 	}
 
 	deleteFav := func(w http.ResponseWriter, r *http.Request) {
 		id := getUUID(r.URL)
-		go removeFromList(id)
+		go genNewJsonList(Favorites{}, r.Method, id)
 	}
 
 	editFavForm := func(w http.ResponseWriter, r *http.Request) {
 		id := getUUID(r.URL)
-		target := getOneFav(id)
+		target := getOneFavByID(id)
 		tmpl := template.Must(template.ParseFiles("www/html/favorite-edit.html"))
 		tmpl.ExecuteTemplate(w, "favorite-edit-element", Favorites{UUID: target.UUID, Name: target.Name, HostName: target.HostName, Icon: target.Icon, Port: target.Port, Color: target.Color})
 	}
@@ -154,19 +132,19 @@ func main() {
 		port := r.PostFormValue("port")
 		color := r.PostFormValue("color")
 		id := getUUID(r.URL)
-		target := getOneFav(id)
+		target := getOneFavByID(id)
 		tmpl := template.Must(template.ParseFiles("www/html/index.html"))
 		tmpl.ExecuteTemplate(w, "favorite-list-element", Favorites{UUID: target.UUID, Name: name, HostName: hostname, Icon: icon, Port: port, Color: color})
-		go editList(Favorites{UUID: target.UUID, Name: name, HostName: hostname, Icon: icon, Port: port, Color: color})
+		go genNewJsonList(Favorites{UUID: target.UUID, Name: name, HostName: hostname, Icon: icon, Port: port, Color: color}, r.Method, "")
 	}
 
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./www/css"))))
 	http.HandleFunc("/", getFavFomJson)
-	http.HandleFunc("/add-favorite/", addFav)
-	http.HandleFunc("/edit-favorite/", editFav)
-	http.HandleFunc("/delete-favorite/", deleteFav)
-	http.HandleFunc("/edit-favorite-form/", editFavForm)
-	http.HandleFunc("/add-favorite-form/", addFavForm)
+	http.HandleFunc("/form/favorite/add", addFavForm)
+	http.HandleFunc("/form/favorite/edit/", editFavForm)
+	http.HandleFunc("/favorite/add/", addFav)
+	http.HandleFunc("/favorite/edit/", editFav)
+	http.HandleFunc("/favorite/delete/", deleteFav)
 
 	log.Fatal(http.ListenAndServe(":8182", nil))
 }
