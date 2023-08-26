@@ -171,6 +171,4 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8182", nil))
 }
 
-//TODO generate a UUID for each fav to delete or edit it
-// make edit/create/delete in one function
-// fix edit of first box
+//TODO make edit/create/delete in one function
