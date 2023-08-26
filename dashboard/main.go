@@ -103,7 +103,7 @@ func main() {
 	http.HandleFunc("/remove-favorite/", h4)
 	http.HandleFunc("/modal", h3)
 
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	log.Fatal(http.ListenAndServe(":8182", nil))
 }
 
 //TODO generate a UUID for each fav to delete or edit it

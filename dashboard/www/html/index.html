@@ -31,7 +31,7 @@
         <p>{{ .HostName }}</p>
         <p>{{ .Icon }}</p>
         <p>{{ .Port }}</p>
-        <button class="card-btn" hx-confirm="Are you sure?" hx-delete="/remove-favorite/{{.Name}}" hx-target="closest div" hx-swap="outerHTML">test</button>
+        <button class="card-btn" hx-confirm="Are you sure ro delete {{.Name}}?" hx-delete="/remove-favorite/{{.Name}}" hx-target="closest div" hx-swap="outerHTML">test</button>
       </div>
       {{ end }}
       {{ end }}
