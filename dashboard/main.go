@@ -15,9 +15,12 @@ import (
 type Favorites struct {
 	UUID     string
 	Name     string
-	HostName string
 	Icon     string
+	Protocol string
+	HostName string
 	Port     string
+	Path     string
+	Note     string
 	Color    string
 }
 
@@ -117,18 +120,21 @@ func main() {
 	addFav := func(w http.ResponseWriter, r *http.Request) {
 		id := uuid.New()
 		name := r.PostFormValue("name")
+		protocol := r.PostFormValue("protocol")
+		path := r.PostFormValue("path")
+		note := r.PostFormValue("note")
 		hostname := r.PostFormValue("hostname")
 		icon := r.PostFormValue("icon")
 		port := r.PostFormValue("port")
 		color := r.PostFormValue("color")
 		tmpl := template.Must(template.ParseFiles("www/html/index.gohtml"))
-		tmpl.ExecuteTemplate(w, "favorite-list-element", Favorites{UUID: id.String(), Name: name, HostName: hostname, Icon: icon, Port: port, Color: color})
-		go genNewJsonList(Favorites{UUID: id.String(), Name: name, HostName: hostname, Icon: icon, Port: port, Color: color}, r.Method, "")
+		tmpl.ExecuteTemplate(w, "favorite-list-element", Favorites{UUID: id.String(), Name: name, Icon: icon, Protocol: protocol, Path: path, HostName: hostname, Port: port, Note: note, Color: color})
+		go genNewJsonList(Favorites{UUID: id.String(), Name: name, Icon: icon, Protocol: protocol, Path: path, HostName: hostname, Port: port, Note: note, Color: color}, r.Method, "")
 	}
 
 	addFavForm := func(w http.ResponseWriter, r *http.Request) {
-		tmpl := template.Must(template.ParseFiles("www/html/favorite-add.gohtml"))
-		tmpl.Execute(w, nil)
+		tmpl := template.Must(template.ParseFiles("www/html/favorite-form.gohtml"))
+		tmpl.ExecuteTemplate(w, "favorite-edit-element", Favorites{})
 	}
 
 	deleteFav := func(w http.ResponseWriter, r *http.Request) {
@@ -139,12 +145,15 @@ func main() {
 	editFavForm := func(w http.ResponseWriter, r *http.Request) {
 		id := getUUID(r.URL)
 		target := getOneFavByID(id)
-		tmpl := template.Must(template.ParseFiles("www/html/favorite-edit.gohtml"))
-		tmpl.ExecuteTemplate(w, "favorite-edit-element", Favorites{UUID: target.UUID, Name: target.Name, HostName: target.HostName, Icon: target.Icon, Port: target.Port, Color: target.Color})
+		tmpl := template.Must(template.ParseFiles("www/html/favorite-form.gohtml"))
+		tmpl.ExecuteTemplate(w, "favorite-edit-element", Favorites{UUID: target.UUID, Name: target.Name, Protocol: target.Protocol, Path: target.Path, HostName: target.HostName, Icon: target.Icon, Port: target.Port, Note: target.Note, Color: target.Color})
 	}
 
 	editFav := func(w http.ResponseWriter, r *http.Request) {
 		name := r.PostFormValue("name")
+		protocol := r.PostFormValue("protocol")
+		path := r.PostFormValue("path")
+		note := r.PostFormValue("note")
 		hostname := r.PostFormValue("hostname")
 		icon := r.PostFormValue("icon")
 		port := r.PostFormValue("port")
@@ -152,8 +161,8 @@ func main() {
 		id := getUUID(r.URL)
 		target := getOneFavByID(id)
 		tmpl := template.Must(template.ParseFiles("www/html/index.gohtml"))
-		tmpl.ExecuteTemplate(w, "favorite-list-element", Favorites{UUID: target.UUID, Name: name, HostName: hostname, Icon: icon, Port: port, Color: color})
-		go genNewJsonList(Favorites{UUID: target.UUID, Name: name, HostName: hostname, Icon: icon, Port: port, Color: color}, r.Method, "")
+		tmpl.ExecuteTemplate(w, "favorite-list-element", Favorites{UUID: target.UUID, Name: name, Icon: icon, Protocol: protocol, Path: path, HostName: hostname, Port: port, Note: note, Color: color})
+		go genNewJsonList(Favorites{UUID: target.UUID, Name: name, Icon: icon, Protocol: protocol, Path: path, HostName: hostname, Port: port, Note: note, Color: color}, r.Method, "")
 	}
 
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./www/css"))))
@@ -166,5 +175,3 @@ func main() {
 
 	log.Fatal(http.ListenAndServe(":8182", nil))
 }
-
-//TODO make edit/create/delete in one function

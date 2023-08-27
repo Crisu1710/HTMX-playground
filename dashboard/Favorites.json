@@ -1,1 +1,26 @@
-{"Favorites":[{"UUID":"41596251-a23a-4eec-8ccc-133858893125","Name":"TEST","HostName":"dsfgsd","Icon":"sdfgdsf","Port":"4536","Color":"orange"},{"UUID":"4ae49213-4f59-4532-8472-93f41b611fe7","Name":"TEST123","HostName":"dsfgsd","Icon":"sdfgdsf","Port":"4536","Color":"orange"}]}
+{
+  "Favorites": [
+    {
+      "UUID": "7a38725a-21a4-46d4-b757-8c79c6069394",
+      "Name": "TEST",
+      "Icon": "dog",
+      "Protocol": "HTTPS",
+      "HostName": "192.168.213.3",
+      "Port": "443",
+      "Path": "/home",
+      "Note": "This is a test",
+      "Color": "black"
+    },
+    {
+      "UUID": "1a96963e-f0ca-44ab-b9be-5f9b9801952a",
+      "Name": "google",
+      "Icon": "google",
+      "Protocol": "https",
+      "HostName": "google.com",
+      "Port": "443",
+      "Path": "/",
+      "Note": "This is a test",
+      "Color": "red"
+    }
+  ]
+}

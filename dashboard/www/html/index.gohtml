@@ -27,14 +27,17 @@
       {{ range .Favorites }}
       {{ block "favorite-list-element" .}}
       <div class="flex-item row" id="favorite-card-{{.UUID}}" style="background: {{.Color}}">
-          <div class="split-container" onclick="openUrl({{.HostName}})">
+          <div class="split-container" onclick="openUrl({{.Protocol}},{{.HostName}},{{.Port}},{{.Path}})">
             <div class="split-item">
               <img class="myFavIcon" alt="test" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fjuststickers.in%2Fwp-content%2Fuploads%2F2016%2F07%2Fgo-programming-language.png&f=1&nofb=1&ipt=26601860d7c2b97fd29f2a6a4558d51f424f35c082b580aa9e16a59fdcb85a9d&ipo=images">
             </div>
             <div class="split-item">
               <p class="my-h" id="favorite-name">{{.Name}}</p>
-              <p>{{ .HostName }}</p>
-              <p>{{ .Port }}</p>
+              <p>Host: {{ .HostName }}</p>
+              <p>Port: {{ .Port }}</p>
+              {{if .Note}}
+                <p>Note: {{ .Note }}</p>
+              {{end}}
             </div>
           </div>
           <div style="text-align: center">
@@ -55,7 +58,7 @@
 </html>
 
 <script>
-  function openUrl(myUrl) {
-    window.open(myUrl)
+  function openUrl(protocol, hostname, port, path) {
+    window.open(protocol+"://"+hostname+":"+port+path)
   }
 </script>
