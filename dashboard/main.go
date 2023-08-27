@@ -166,6 +166,7 @@ func main() {
 	}
 
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./www/css"))))
+	http.Handle("/icon/", http.StripPrefix("/icon/", http.FileServer(http.Dir("./www/icon"))))
 	http.HandleFunc("/", getFavFomJson)
 	http.HandleFunc("/form/favorite/add", addFavForm)
 	http.HandleFunc("/form/favorite/edit/", editFavForm)

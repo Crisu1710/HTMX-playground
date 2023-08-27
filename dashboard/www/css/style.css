@@ -28,6 +28,33 @@
     list-style: none;
 }
 
+.flex-form-container-1 {
+    display: grid;
+    grid-template-columns: auto auto;
+    margin-bottom: 20px;
+}
+.flex-form-container-2 {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 19% 33% 15% 33%;
+    margin-bottom: 20px;
+}
+.flex-form-container-3 {
+    display: grid;
+    grid-template-columns: 80% 20%;
+    margin-bottom: 20px;
+}
+
+
+.split-form-item {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
 .flex-item {
     background: #283593;
     padding: 8px;
@@ -61,10 +88,17 @@ p {
     font-size: 22px;
 }
 
+.form-control[type=text] {
+    background-color: #181818;
+    color: white;
+    border-color: black;
+}
+
 .add-btn {
     border-radius: 25px;
     border: none;
-    color: white;
+    color: #332e2e;
+    background: #10efcd;
     padding: 15px;
     text-align: center;
     text-decoration: none;
