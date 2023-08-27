@@ -26,20 +26,26 @@
     <div class="flex-container" id="favorite-list">
       {{ range .Favorites }}
       {{ block "favorite-list-element" .}}
-      <div class="flex-item" id="favorite-card-{{.UUID}}" style="background: {{.Color}}">
-        <p class="my-h" id="favorite-name">{{.Name}}</p>
-        <p>{{ .HostName }}</p>
-        <p>{{ .Icon }}</p>
-        <p>{{ .Port }}</p>
-        <div style="text-align: center">
-          <button class="card-btn" hx-confirm="Are you sure to delete {{.Name}} with UUID {{.UUID}}?" hx-delete="/favorite/delete/{{.UUID}}" hx-target="#favorite-card-{{.UUID}}" hx-swap="delete">delete</button>
-          <button class="card-btn" hx-get="/form/favorite/edit/{{.UUID}}" hx-target="#edit-favorite-form" hx-trigger="click" data-bs-toggle="modal" data-bs-target="#edit-favorite-form">edit</button>
-          <div id="edit-favorite-form" class="modal modal-blur fade" style="display: none" aria-hidden="false" tabindex="-1">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-              <div class="modal-content"></div>
+      <div class="flex-item row" id="favorite-card-{{.UUID}}" style="background: {{.Color}}">
+          <div class="split-container" onclick="openUrl({{.HostName}})">
+            <div class="split-item">
+              <img class="myFavIcon" alt="test" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fjuststickers.in%2Fwp-content%2Fuploads%2F2016%2F07%2Fgo-programming-language.png&f=1&nofb=1&ipt=26601860d7c2b97fd29f2a6a4558d51f424f35c082b580aa9e16a59fdcb85a9d&ipo=images">
+            </div>
+            <div class="split-item">
+              <p class="my-h" id="favorite-name">{{.Name}}</p>
+              <p>{{ .HostName }}</p>
+              <p>{{ .Port }}</p>
             </div>
           </div>
-        </div>
+          <div style="text-align: center">
+            <button class="card-btn" hx-confirm="Are you sure to delete {{.Name}} with UUID {{.UUID}}?" hx-delete="/favorite/delete/{{.UUID}}" hx-target="#favorite-card-{{.UUID}}" hx-swap="delete">delete</button>
+            <button class="card-btn" hx-get="/form/favorite/edit/{{.UUID}}" hx-target="#edit-favorite-form" hx-trigger="click" data-bs-toggle="modal" data-bs-target="#edit-favorite-form">edit</button>
+            <div id="edit-favorite-form" class="modal modal-blur fade" style="display: none" aria-hidden="false" tabindex="-1">
+              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content"></div>
+              </div>
+            </div>
+          </div>
       </div>
       {{ end }}
       {{ end }}
@@ -47,3 +53,9 @@
   </div>
 </body>
 </html>
+
+<script>
+  function openUrl(myUrl) {
+    window.open(myUrl)
+  }
+</script>

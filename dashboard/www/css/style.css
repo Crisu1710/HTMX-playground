@@ -22,16 +22,16 @@
     /* We first create a flex layout context */
     display: flex;
     flex-flow: row wrap;
-    justify-content: normal;
+    justify-content: center;
     padding: 0;
     margin: 0;
     list-style: none;
 }
 
 .flex-item {
-    background: #0cb0d5;
+    background: #283593;
     padding: 8px;
-    width: 200px;
+    width: 250px;
     height: 150px;
     margin: 5px;
     line-height: 20px;
@@ -41,13 +41,23 @@
     border-radius: 25px;
 }
 
+.split-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    align-items: center;
+    justify-items: center;
+}
+
+.split-item {
+}
+
 p {
     margin-bottom: 1px;
 }
 
 .my-h {
     margin-bottom: 12px;
-    text-align: center;
+    /*text-align: center;*/
     font-size: 22px;
 }
 
@@ -70,4 +80,13 @@ p {
     padding: 4px;
     text-align: center;
     background: transparent;
+}
+
+.myFavIcon {
+    width: 60px;
+    height: 60px;
+    /*
+    justify-content: center;
+    */
+    float: left;
 }

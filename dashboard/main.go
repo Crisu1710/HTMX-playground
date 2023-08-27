@@ -2,14 +2,14 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
+	"github.com/google/uuid"
 	"html/template"
 	"log"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
-
-	"github.com/google/uuid"
 )
 
 type Favorites struct {
@@ -19,6 +19,24 @@ type Favorites struct {
 	Icon     string
 	Port     string
 	Color    string
+}
+
+func init() {
+	log.Println("start init ...")
+	checkFile, err := os.Stat("Favorites.json")
+	if err != nil {
+		log.Println(err)
+	}
+	if errors.Is(err, os.ErrNotExist) || checkFile.Size() == 0 {
+		log.Println("File is empty. Create init file ...")
+		newList := map[string][]Favorites{
+			"Favorites": nil,
+		}
+		rankingsJson, _ := json.Marshal(newList)
+		os.WriteFile("Favorites.json", rankingsJson, 0644)
+	} else if checkFile.Size() != 0 {
+		log.Println("Json file found. Starting ...")
+	}
 }
 
 func getUUID(urlPath *url.URL) string {
@@ -91,7 +109,7 @@ func main() {
 	log.Println("Running ...")
 
 	getFavFomJson := func(w http.ResponseWriter, r *http.Request) {
-		tmpl := template.Must(template.ParseFiles("www/html/index.html"))
+		tmpl := template.Must(template.ParseFiles("www/html/index.gohtml"))
 		favorites := getListFromJson
 		tmpl.Execute(w, favorites())
 	}
@@ -103,13 +121,13 @@ func main() {
 		icon := r.PostFormValue("icon")
 		port := r.PostFormValue("port")
 		color := r.PostFormValue("color")
-		tmpl := template.Must(template.ParseFiles("www/html/index.html"))
+		tmpl := template.Must(template.ParseFiles("www/html/index.gohtml"))
 		tmpl.ExecuteTemplate(w, "favorite-list-element", Favorites{UUID: id.String(), Name: name, HostName: hostname, Icon: icon, Port: port, Color: color})
 		go genNewJsonList(Favorites{UUID: id.String(), Name: name, HostName: hostname, Icon: icon, Port: port, Color: color}, r.Method, "")
 	}
 
 	addFavForm := func(w http.ResponseWriter, r *http.Request) {
-		tmpl := template.Must(template.ParseFiles("www/html/favorite-add.html"))
+		tmpl := template.Must(template.ParseFiles("www/html/favorite-add.gohtml"))
 		tmpl.Execute(w, nil)
 	}
 
@@ -121,7 +139,7 @@ func main() {
 	editFavForm := func(w http.ResponseWriter, r *http.Request) {
 		id := getUUID(r.URL)
 		target := getOneFavByID(id)
-		tmpl := template.Must(template.ParseFiles("www/html/favorite-edit.html"))
+		tmpl := template.Must(template.ParseFiles("www/html/favorite-edit.gohtml"))
 		tmpl.ExecuteTemplate(w, "favorite-edit-element", Favorites{UUID: target.UUID, Name: target.Name, HostName: target.HostName, Icon: target.Icon, Port: target.Port, Color: target.Color})
 	}
 
@@ -133,7 +151,7 @@ func main() {
 		color := r.PostFormValue("color")
 		id := getUUID(r.URL)
 		target := getOneFavByID(id)
-		tmpl := template.Must(template.ParseFiles("www/html/index.html"))
+		tmpl := template.Must(template.ParseFiles("www/html/index.gohtml"))
 		tmpl.ExecuteTemplate(w, "favorite-list-element", Favorites{UUID: target.UUID, Name: name, HostName: hostname, Icon: icon, Port: port, Color: color})
 		go genNewJsonList(Favorites{UUID: target.UUID, Name: name, HostName: hostname, Icon: icon, Port: port, Color: color}, r.Method, "")
 	}
