@@ -1,0 +1,11 @@
+{{define "opts"}}
+<div style="text-align: center" id="fav-opts">
+    <button class="card-btn" hx-confirm="Are you sure to delete {{.Name}} with UUID {{.UUID}}?" hx-delete="/favorite/delete/{{.UUID}}" hx-target="#favorite-card-{{.UUID}}" hx-swap="delete">delete</button>
+    <button class="card-btn" hx-get="/form/favorite/edit/{{.UUID}}" hx-target="#edit-favorite-form" hx-trigger="click" data-bs-toggle="modal" data-bs-target="#edit-favorite-form">edit</button>
+    <div id="edit-favorite-form" class="modal modal-blur fade" style="display: none" aria-hidden="false" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content"></div>
+        </div>
+    </div>
+</div>
+{{end}}

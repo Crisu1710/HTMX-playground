@@ -112,7 +112,7 @@ func main() {
 	log.Println("Running ...")
 
 	getFavFomJson := func(w http.ResponseWriter, r *http.Request) {
-		tmpl := template.Must(template.ParseFiles("www/html/index.gohtml"))
+		tmpl := template.Must(template.ParseFiles("www/html/index.gohtml", "www/html/favorite-opts.gohtml"))
 		favorites := getListFromJson
 		tmpl.Execute(w, favorites())
 	}
@@ -165,6 +165,14 @@ func main() {
 		go genNewJsonList(Favorites{UUID: target.UUID, Name: name, Icon: icon, Protocol: protocol, Path: path, HostName: hostname, Port: port, Note: note, Color: color}, r.Method, "")
 	}
 
+	optsFav := func(w http.ResponseWriter, r *http.Request) {
+		/*tmpl := template.Must(template.ParseFiles("www/html/favorite-opts.gohtml"))
+		favorites := getListFromJson
+		tmpl.ExecuteTemplate(w, "opts", Favorites{UUID: "test"})
+		fmt.Fprintf(w, "<div style=\"text-align: center\" id=\"fav-opts\"></div>")*/
+		log.Println("show buttons")
+	}
+
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./www/css"))))
 	http.Handle("/icon/", http.StripPrefix("/icon/", http.FileServer(http.Dir("./www/icon"))))
 	http.HandleFunc("/", getFavFomJson)
@@ -173,6 +181,7 @@ func main() {
 	http.HandleFunc("/favorite/add/", addFav)
 	http.HandleFunc("/favorite/edit/", editFav)
 	http.HandleFunc("/favorite/delete/", deleteFav)
+	http.HandleFunc("/favorite/opts", optsFav)
 
 	log.Fatal(http.ListenAndServe(":8182", nil))
 }
