@@ -12,7 +12,7 @@
             {{if .UUID }} {{/*edit*/}}
             <form hx-put="/favorite/edit/{{.UUID}}" hx-target="#favorite-card-{{.UUID}}" hx-swap="outerHTML" hx-indicator="#spinner">
             {{else}} {{/*add new*/}}
-            <form hx-post="/favorite/add/" hx-target="#favorite-list" hx-swap="beforeend" hx-indicator="#spinner">
+            <form hx-post="/favorite/add/" hx-target="#favorite-list" hx-swap="afterbegin" hx-indicator="#spinner">
             {{end}}
                 <div class="flex-form-container-1">
                     <div class="split-form-item">

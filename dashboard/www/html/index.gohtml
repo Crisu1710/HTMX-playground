@@ -15,6 +15,8 @@
 </head>
 <body class="container bg-dark text-white">
 
+{{/*TODO use htmx boots for new page*/}}
+
 <div class="row mt-4 g-4">
     <div class="flex-h-container">
         <h1 class="mb-4">Favorites List</h1>
@@ -39,7 +41,8 @@
         {{ range .Favorites }}
             {{ block "favorite-list-element" .}}
                 <div>
-                    <div class="flex-item row" id="favorite-card-{{.UUID}}" style="background: {{.Color}}; height: 120px">
+                    <div class="flex-item row" id="favorite-card-{{.UUID}}"
+                         style="background: {{.Color}}; height: 120px">
                         <div class="split-container" onclick="openUrl({{.Protocol}},{{.HostName}},{{.Port}},{{.Path}})">
                             <div class="split-item">
                                 <img class="myFavIcon" alt="test" src="icon/go.png">
@@ -83,6 +86,7 @@
     function openUrl(protocol, hostname, port, path) {
         window.open(protocol + "://" + hostname + ":" + port + path)
     }
+
     function switchOpts(checkbox) {
         if (checkbox.checked) {
             const myFavOpts = document.getElementsByClassName('fav-opts')
@@ -91,7 +95,7 @@
             }
             const myFavBox = document.getElementsByClassName('flex-item')
             for (let i = 0; i < myFavBox.length; i++) {
-                myFavBox[i].style.height = "200px"
+                myFavBox[i].style.height = "150px"
             }
         } else {
             const myFavOpts = document.getElementsByClassName('fav-opts')

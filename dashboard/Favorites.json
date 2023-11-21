@@ -1,1 +1,26 @@
-{"Favorites":[{"UUID":"1a96963e-f0ca-44ab-b9be-5f9b9801952a","Name":"google","Icon":"google","Protocol":"https","HostName":"google.com","Port":"443","Path":"/","Note":"This is a test","Color":"#62a0ea"},{"UUID":"7a38725a-21a4-46d4-b757-8c79c6069394","Name":"TEST","Icon":"dog","Protocol":"HTTPS","HostName":"192.168.213.3","Port":"443","Path":"/home","Note":"This is a test","Color":"#ed333b"},{"UUID":"788f2806-c122-4029-84f4-07faccda16ba","Name":"trwert","Icon":"","Protocol":"","HostName":"","Port":"","Path":"","Note":"","Color":"#813d9c"},{"UUID":"3c3f3f32-1445-4b92-894c-acae736fec03","Name":"trwert","Icon":"","Protocol":"","HostName":"","Port":"","Path":"","Note":"","Color":"#813d9c"},{"UUID":"88d17a54-68a3-4915-90aa-26888d90c8ee","Name":"TEST","Icon":"","Protocol":"","HostName":"","Port":"","Path":"","Note":"","Color":"#f66151"}]}
+{
+  "Favorites": [
+    {
+      "UUID": "1a96963e-f0ca-44ab-b9be-5f9b9801952a",
+      "Name": "google",
+      "Icon": "google",
+      "Protocol": "https",
+      "HostName": "google.com",
+      "Port": "443",
+      "Path": "/",
+      "Note": "This is a test",
+      "Color": "#62a0ea"
+    },
+    {
+      "UUID": "7a38725a-21a4-46d4-b757-8c79c6069394",
+      "Name": "TEST",
+      "Icon": "dog",
+      "Protocol": "HTTPS",
+      "HostName": "192.168.213.3",
+      "Port": "443",
+      "Path": "/home",
+      "Note": "This is a test",
+      "Color": "#ed333b"
+    }
+  ]
+}
